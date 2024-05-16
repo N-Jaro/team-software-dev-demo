@@ -1,29 +1,22 @@
-name: Python Code Quality Check  # Explicitly name the workflow
+name: Python Code Quality
 
-on:  # Define the triggers
-  push:   
-  pull_request:
+on: [push, pull_request]
 
-jobs:  # Define the job to run
-  flake8-lint:
-    runs-on: ubuntu-latest    
-    name: Python Code Quality
-    steps:  # List the steps in the job
-      - name: Check out repository
-        uses: actions/checkout@v2   # Use the official checkout action
+jobs:
+    flake8-lint:
+        runs-on: ubuntu-latest
+        name: Python Code Quality
+        steps:
+        - name: Check out source repository
+          uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.x"  # Be more specific if needed (e.g., '3.9')
-          cache: 'pip'   # Cache pip dependencies to speed up subsequent runs
-          cache-dependency-path: "mycybergis/requirements.txt"  # Cache is invalidated when requirements change
+        - name: Set up Python environment
+          uses: actions/setup-python@v2
+          with:
+            python-version: "3.x"
 
-      - name: Install dependencies
-        run: pip install -r mycybergis/requirements.txt  # Assumes requirements file is in this path
-
-      - name: Run flake8 Lint
-        uses: py-actions/flake8@v1
-        with:
-          path: "mycybergis"  # Directory to check for Python files
-          args: "--ignore=E501,E722,F403,F405"  # List of flake8 error codes to ignore 
+        - name: flake8 Lint Check
+          uses: py-actions/flake8@v1
+          with:
+            path: "mycybergis"
+            args: "--ignore=E501,E722,F403,F405"
